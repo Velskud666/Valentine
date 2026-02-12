@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>For Bi ❤️</title>
+<style>
+  :root{
+    --ink:#2a1b1f;
+    --paper:#fff7ef;
+    --paper2:#ffeedd;
+    --rose:#ff4d6d;
+    --rose2:#ff7aa2;
+    --glow: 0 12px 40px rgba(0,0,0,.25);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #0b0710;
+    color: #fff;
+    overflow:hidden;
+  }
+
+  /* ----- Scene container ----- */
+  .scene{
+    position: fixed; inset:0;
+    display:grid;
+    place-items:center;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .8s ease;
+  }
+  .scene.active{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  /* ----- Shared background layers ----- */
+  .bg{
+    position:absolute; inset:0;
+    overflow:hidden;
+  }
+  .vignette{
+    position:absolute; inset:-20%;
+    background: radial-gradient(closest-side, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%);
+    pointer-events:none;
+  }
+
+  /* ===== Scene 1: Road + flowers ===== */
+  .roadSky{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(900px 500px at 50% 18%, rgba(255,120,170,.35), transparent 60%),
+    radial-gradient(700px 420px at 20% 25%, rgba(140,170,255,.18), transparent 65%),
+    radial-gradient(900px 700px at 80% 70%, rgba(255,220,180,.10), transparent 70%),
+    linear-gradient(to bottom, #1a1030 0%, #0f0a18 55%, #07060c 100%);
+}
+  }
+  .road{
+    position:absolute;
+    left:50%; top:45%;
+    width: 120vmin; height: 120vmin;
+    transform: translateX(-50%) rotate(8deg);
+filter: blur(0.2px) drop-shadow(0 30px 90px rgba(0,0,0,.45));
+    background:
+      radial-gradient(circle at 50% 30%, rgba(255,255,255,.10), transparent 60%),
+      linear-gradient(to bottom, #2c2c36, #161620);
+    clip-path: polygon(45% 0%, 55% 0%, 78% 100%, 22% 100%);
+    filter: drop-shadow(0 25px 80px rgba(0,0,0,.35));
+  }
+  .roadLine{
+    position:absolute;
+    left:50%; top:48%;
+    width: 120vmin; height: 120vmin;
+    transform: translateX(-50%) rotate(8deg);
+    clip-path: polygon(49% 0%, 51% 0%, 60% 100%, 40% 100%);
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,230,150,.8) 0 22px,
+      rgba(255,230,150,0) 22px 44px
+    );
+    opacity:.35;
+animation: roadMove 3.2s linear infinite;
+  }
+  @keyframes roadMove { from{ background-position:0 0 } to{ background-position:0 120px } }
+
+  .flowerBand{
+    position:absolute; inset:0;
+    pointer-events:none;
+    opacity:.95;
+  }
+  .petal{
+    position:absolute;
+    width:16px; height:16px;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--rose2) 55%, rgba(0,0,0,0) 60%);
+    border-radius: 50%;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,.2));
+    opacity:.8;
+    animation: drift 6s linear infinite;
+  }
+  @keyframes drift{
+    from{ transform: translate3d(var(--x0), 110vh, 0) rotate(0deg); }
+    to  { transform: translate3d(var(--x1), -20vh, 0) rotate(360deg); }
+  }
+
+  /* Seal + letter card */
+  .startWrap{
+  position:relative;
+  width:min(620px, 92vw);
+  padding:34px 30px 26px;
+  border-radius:28px;
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow: 0 18px 70px rgba(0,0,0,.45);
+  backdrop-filter: blur(12px);
+  text-align:center;
+  overflow:hidden;
+}
+.startWrap::before{
+  content:"";
+  position:absolute; inset:-30%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,120,170,.20), transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(140,170,255,.14), transparent 60%);
+  filter: blur(8px);
+  opacity:.9;
+  pointer-events:none;
+}
+  .subtitle{
+  margin:0 0 22px 0;
+  opacity:.88;
+  line-height:1.5;
+  font-size: 15px;
+}
+  .subtitle{
+    margin:0 0 22px 0;
+    opacity:.85;
+    line-height:1.4;
+  }
+
+  .envelope{
+  margin: 0 auto;
+  width: min(440px, 88vw);
+  aspect-ratio: 16/10;
+  border-radius:20px;
+  position:relative;
+  box-shadow: 0 22px 80px rgba(0,0,0,.45);
+  overflow:hidden;
+
+  background:
+    radial-gradient(900px 260px at 30% 20%, rgba(255,255,255,.75), transparent 60%),
+    linear-gradient(145deg, #f7e7d8, #ffeede);
+}
+  }
+  .envelope:before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(135deg, rgba(0,0,0,.06), transparent 45%),
+      radial-gradient(700px 200px at 20% 20%, rgba(255,255,255,.55), transparent 55%);
+    opacity:.8;
+  }
+  .flap{
+    position:absolute;
+    left:0; top:0;
+    width:100%; height:70%;
+    background: linear-gradient(145deg, #f2dcc8, #ffe8d6);
+    clip-path: polygon(0 0, 100% 0, 50% 70%);
+    transform-origin: 50% 0%;
+    transition: transform 900ms cubic-bezier(.2,.9,.2,1);
+    box-shadow: inset 0 -12px 30px rgba(0,0,0,.08);
+filter: drop-shadow(0 12px 18px rgba(0,0,0,.18));
+transform-style: preserve-3d;
+
+  }
+  .seal{
+  position:absolute;
+  left:50%; top:56%;
+  transform: translate(-50%,-50%);
+  width:96px; height:96px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,.65), rgba(255,255,255,0) 35%),
+    radial-gradient(circle at 35% 30%, #ffb3c6, var(--rose) 55%, #b7163a 100%);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.38),
+    0 0 0 2px rgba(255,255,255,.25) inset;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  transition: transform .18s ease, filter .18s ease;
+  user-select:none;
+}
+  .seal:hover{ transform: translate(-50%,-50%) scale(1.05); filter: brightness(1.05); }
+  .seal:active{ transform: translate(-50%,-50%) scale(.98); }
+  .seal span{
+  font-weight:800;
+  letter-spacing:.14em;
+  font-size:12px;
+  text-transform: uppercase;
+  text-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+  }
+
+  /* ===== Scene 2: Letter reveal ===== */
+  /* ===== SCENE 2: FOREST BACKGROUND ===== */
+#scene2 .letterBg{
+  position:absolute; inset:0;
+  background: url("images/forest.jpg") center/cover no-repeat;
+  filter: saturate(1.12) contrast(1.05);
+  transform: scale(1.02);
+}
+#scene2 .letterBg::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(900px 550px at 50% 20%, rgba(255,150,200,.18), transparent 60%),
+    linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.75));
+}
+
+  .letterCard{
+    position:relative;
+    width: min(760px, 92vw);
+    padding: 26px 26px 18px;
+    border-radius: 26px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: var(--glow);
+    backdrop-filter: blur(10px);
+  }
+  .paper{
+  background: linear-gradient(180deg, var(--paper), var(--paper2));
+  color: var(--ink);
+  border-radius: 18px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+  min-height: 320px;
+  position:relative;
+
+  /* ✅ THIS IS THE SCROLL FIX */
+  max-height: min(72vh, 620px);
+  overflow: auto;
+
+  /* smooth scroll on phones */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.paper::-webkit-scrollbar{ width: 10px; }
+.paper::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,.18);
+  border-radius: 999px;
+}
+.paper::-webkit-scrollbar-track{ background: transparent; }
+
+  .paper:before{
+    content:"";
+    position:absolute; inset:-20%;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.65), transparent 50%);
+    opacity:.6;
+    pointer-events:none;
+
+  }
+  .paperHeader{
+    display:flex; justify-content:space-between; align-items:center;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .badge{
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:999px;
+    background: rgba(255,77,109,.12);
+    color:#8f1531;
+    border: 1px solid rgba(255,77,109,.25);
+    font-weight:600;
+  }
+  .toFrom{
+    font-size:12px;
+    opacity:.75;
+  }
+
+  .typeArea{
+    white-space:pre-wrap;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 220px;
+  }
+  .cursor{
+    display:inline-block;
+    width:10px;
+    border-bottom: 2px solid rgba(0,0,0,.45);
+    transform: translateY(-2px);
+    animation: blink .9s steps(1) infinite;
+    margin-left: 2px;
+  }
+  @keyframes blink { 50%{ opacity:0 } }
+
+  .actions{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:12px;
+  }
+  .btn{
+    border:0;
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .btn.primary{
+    background: linear-gradient(135deg, var(--rose), var(--rose2));
+    color:white;
+    box-shadow: 0 12px 30px rgba(255,77,109,.25);
+  }
+  .btn.ghost{
+    background: rgba(0,0,0,.08);
+    color: rgba(0,0,0,.7);
+  }
+  .btn[disabled]{ opacity:.55; cursor:not-allowed; }
+
+  /* ===== CUTSCENE (Scene 3) ===== */
+/* ===============================
+   CUTSCENE UPGRADE PACK
+   (cinema bars + grain + camera + petals)
+================================ */
+
+/* Cinema letterbox bars (only in scene 3) */
+#scene3.active::before,
+#scene3.active::after{
+  content:"";
+  position:fixed;
+  left:0; width:100vw;
+  height: clamp(26px, 7vh, 90px);
+  background: rgba(0,0,0,.92);
+  z-index: 50;
+  pointer-events:none;
+}
+#scene3.active::before{ top:0; }
+#scene3.active::after{ bottom:0; }
+
+/* Film grain overlay */
+#cutStage::after{
+  content:"";
+  position:absolute; inset:-20%;
+  background:
+    repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,.04) 0 1px, rgba(0,0,0,0) 1px 3px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 2px, rgba(0,0,0,0) 2px 4px);
+  mix-blend-mode: overlay;
+  opacity:.18;
+  animation: grainMove 2.2s steps(2) infinite;
+  pointer-events:none;
+}
+@keyframes grainMove{
+  0%{ transform: translate3d(-2%, -1%, 0); }
+  50%{ transform: translate3d(2%, 1%, 0); }
+  100%{ transform: translate3d(-1%, 2%, 0); }
+}
+
+/* Make sure petal/comet containers are visible */
+.petalLayer, .cometLayer{
+  position:absolute; inset:0;
+  pointer-events:none;
+  opacity:1;
+}
+
+/* Camera variables (applied to whole cutscene) */
+#cutStage{
+  --camScale: 1;
+  --camX: 0px;
+  --camY: 0px;
+  --px: 0px; /* parallax x */
+  --py: 0px; /* parallax y */
+  transform: translate3d(var(--camX), var(--camY), 0) scale(var(--camScale));
+  transition: transform 1800ms cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
+}
+
+/* Parallax movement (background slower, characters a bit more) */
+.cutLayer{
+  transform: translate3d(calc(var(--px) * .35), calc(var(--py) * .25), 0) scale(1.02);
+}
+.char{
+  ...
+  transform: translateX(-50%) translateY(10px) scale(0.98);
+}
+.char.on{
+  ...
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Idle breathing motion for characters */
+.char.on{
+  .char.on{ animation: none; }
+}
+@keyframes idleBob{
+  0%,100%{ }
+  50%{
+    transform: translate3d(calc(var(--px) * .7), calc(var(--py) * .35), 0) translateY(-4px) scale(1);
+  }
+}
+
+/* Cutscene petals */
+.cutPetal{
+  position:absolute;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff, var(--rose2) 60%, rgba(0,0,0,0) 62%);
+  opacity:.75;
+  filter: drop-shadow(0 8px 14px rgba(0,0,0,.25));
+  animation: cutPetalDrift var(--dur) linear forwards;
+}
+@keyframes cutPetalDrift{
+  from{ transform: translate3d(var(--x), 110vh, 0) rotate(0deg); }
+  to  { transform: translate3d(calc(var(--x) + var(--wind)), -20vh, 0) rotate(420deg); }
+}
+
+  .cutStage{
+    position:absolute; inset:0;
+    overflow:hidden;
+  }
+  .cutLayer{
+    position:absolute; inset:0;
+    opacity:0;
+    transform: scale(1.02);
+    transition: opacity 1.1s ease, transform 2.2s ease;
+  }
+  .cutLayer.on{
+    opacity:1;
+    transform: scale(1.00);
+  }
+  /* placeholder backgrounds (swap with images later) */
+  .forestLayer{
+  background: url("images/forest.jpg") center/cover no-repeat;
+}
+.meadowLayer{
+  background: url("images/meadow.jpg") center/cover no-repeat;
+}
+.nightLayer{
+  background: url("images/night.jpg") center/cover no-repeat;
+}
+  }
+
+  /* characters (placeholder “anime-shaded silhouette” blocks) */
+  .char{
+    position:absolute;
+    bottom:10vh;
+    width: 18vmin;
+    height: 40vmin;
+    border-radius: 18vmin 18vmin 6vmin 6vmin;
+    opacity:0;
+    transform: translateX(-50%) translateY(10px) scale(0.98);
+    transition: opacity 1.0s ease, transform 1.6s ease, left 2.2s ease;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,.35));
+  }
+  .girl, .boy{
+  width: 24vmin;
+  height: 50vmin;
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0;
+  mix-blend-mode: normal; /* IMPORTANT: remove multiply */
+  filter: drop-shadow(0 18px 28px rgba(0,0,0,.35));
+}
+
+/* default pose */
+.girl{ left: 32%; background-image: url("images/girl_idle.png"); }
+.boy { left: 68%; background-image: url("images/boy_idle.png"); }
+
+/* pose swaps */
+.girl.run  { background-image: url("images/girl_run.png"); }
+.girl.hold { background-image: url("images/girl_hold.png"); }
+.boy.hold  { background-image: url("images/boy_hold.png"); }
+
+  .char.on{
+    opacity:1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  .girl.run { left: 48%; }
+.girl.hold{ left: 46%; }
+.boy.hold { left: 54%; }
+
+  .caption{
+    position:absolute;
+    left:50%; bottom: 7vh;
+    transform: translateX(-50%);
+    width:min(820px, 92vw);
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: rgba(0,0,0,.35);
+    border: 1px solid rgba(255,255,255,.16);
+    backdrop-filter: blur(10px);
+    font-size: 16px;
+    line-height: 1.45;
+    opacity:0;
+    transition: opacity .9s ease;
+  }
+  .caption.on{ opacity:1; }
+
+  .lyrics{
+    position:absolute;
+    left:50%;
+    bottom: 15vh;
+    transform: translateX(-50%);
+    width:min(920px, 92vw);
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: rgba(0,0,0,.28);
+    border: 1px solid rgba(255,255,255,.14);
+    backdrop-filter: blur(10px);
+    text-align:center;
+    font-size: 18px;
+    line-height: 1.35;
+    opacity:0;
+    transition: opacity .6s ease;
+    pointer-events:none;
+    text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  }
+  .lyrics.on{ opacity:1; }
+
+  .petalLayer, .cometLayer{
+  position:absolute; inset:0;
+  pointer-events:none;
+  opacity:1;
+}
+
+  .comet{
+    position:absolute;
+    width: 140px;
+    height: 2px;
+    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,.95));
+    opacity:.0;
+    transform: rotate(-18deg);
+    animation: comet 1.6s ease-out forwards;
+  }
+  @keyframes comet{
+    0%{ opacity:0; transform: translate(-10vw, -10vh) rotate(-18deg); }
+    15%{ opacity:1; }
+    100%{ opacity:0; transform: translate(120vw, 70vh) rotate(-18deg); }
+  }
+
+  .black{
+    position:absolute; inset:0;
+    background:#000;
+    display:grid;
+    place-items:center;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 1.2s ease;
+  }
+  .black.on{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .finalMsg{
+    color:#fff;
+    font-size: clamp(26px, 4.5vw, 46px);
+    letter-spacing:.4px;
+    text-align:center;
+    padding: 0 16px;
+  }
+
+  .fadeUp{ animation: fadeUp .8s ease both; }
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(10px) scale(.99); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+/* ===== FORCE CHARACTER POSITIONING (paste at END of CSS) ===== */
+#scene3 .char{
+  position:absolute;
+  bottom:10vh;
+  width: 48vmin;
+  height: 92vmin;
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translateX(-50%) translateY(10px) scale(0.98);
+}
+#scene3 #boy.bouquet { background-image: url("images/boy_bouquet.png"); left: 53%; }
+
+#scene3 .char.on{
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* idle positions */
+#scene3 #girl{ left: 32%; background-image: url("images/girl_idle.png"); }
+#scene3 #boy { left: 68%; background-image: url("images/boy_idle.png"); }
+
+/* pose swaps */
+#scene3 #girl.run  { background-image: url("images/girl_run.png"); left: 48%; }
+#scene3 #girl.hold { background-image: url("images/girl_hold.png"); left: 46%; }
+#scene3 #boy.offer { background-image: url("images/boy_hold.png"); } /* pose only */
+#scene3 #boy.hold  { background-image: url("images/boy_hold.png"); left: 54%; }
+
+/* ===== FIX: SHOW FOREST BG IN SCENE 1 ===== */
+#scene1 .scene1Bg{
+  position:absolute; inset:0;
+  background: url("images/forest.jpg") center/cover no-repeat;
+  filter: saturate(1.15) contrast(1.05);
+  transform: scale(1.02);
+  z-index: 0;
+}
+#scene1 .scene1Bg::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(900px 500px at 50% 35%, rgba(255,160,200,.18), transparent 60%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.70));
+}
+
+/* IMPORTANT: these were covering the forest */
+#scene1 .roadSky,
+#scene1 .road,
+#scene1 .roadLine{
+  display:none !important;
+}
+
+/* keep UI above bg */
+#scene1 .startWrap{ position:relative; z-index: 2; }
+#scene1 .vignette{ z-index: 3; }
+#scene1 #petals{ z-index: 2; }
+/* ===== FORCE FIX: SCENE 2 FOREST BG (NO BLACK SCREEN) ===== */
+#scene2 .bg { position: absolute; inset: 0; }
+
+#scene2 .letterBg{
+  position:absolute; inset:0;
+  background: url("images/forest.jpg") center/cover no-repeat !important;
+  background-color: #120b1a; /* fallback if image fails */
+  filter: saturate(1.12) contrast(1.05);
+  transform: scale(1.02);
+  z-index: 0;
+}
+
+#scene2 .letterBg::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(900px 550px at 50% 20%, rgba(255,150,200,.14), transparent 62%),
+    linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.45)); /* lighter */
+  pointer-events:none;
+}
+
+#scene2 .letterCard{ position:relative; z-index: 2; }
+#scene2 .vignette{ position:absolute; inset:-20%; z-index: 3; }
+/* ===== LETTER LOOK UPGRADE (SCENE 2) ===== */
+#scene2 .letterCard{
+  width: min(880px, 94vw);
+  padding: 22px;
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow: 0 22px 90px rgba(0,0,0,.55);
+  backdrop-filter: blur(14px);
+}
+
+#scene2 .paper{
+  border-radius: 22px;
+  padding: 26px 28px 18px;
+  background:
+    radial-gradient(900px 420px at 20% 0%, rgba(255,255,255,.80), rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, #fff9f3, #ffe6db);
+  box-shadow: 0 16px 55px rgba(0,0,0,.35);
+  position:relative;
+  overflow:hidden;
+}
+
+#scene2 .paper::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(650px 300px at 75% 20%, rgba(255,160,200,.16), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.018) 0 2px, rgba(0,0,0,0) 2px 7px);
+  opacity:.55;
+  pointer-events:none;
+}
+
+#scene2 .paperHeader{
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(40,20,25,.18);
+}
+
+#scene2 .badge{
+  background: rgba(255,77,109,.14);
+  border: 1px solid rgba(255,77,109,.28);
+  color:#7d102a;
+}
+
+#scene2 .toFrom{
+  font-size: 12px;
+  opacity: .70;
+}
+
+/* (optional) make scrolling always possible even if cursor is outside */
+#scene2 .typeArea{
+  min-height: auto !important;
+}
+/* keep the text from expanding the container */
+#scene2 #typeArea{
+  max-height: none !important;
+}
+#scene2{ touch-action: pan-y; }
+/* ===== FORCE SCROLL (TEXT AREA ONLY) ===== */
+#scene2 .paper{
+  max-height: min(76vh, 680px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;  /* important: scroll is inside .letterScroll */
+}
+
+#scene2 .letterScroll{
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 6px; /* room for scrollbar */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* keep buttons always visible */
+#scene2 .actions{
+  flex: 0 0 auto !important;
+  margin-top: 14px;
+}
+
+/* (optional) show scrollbar in Brave a bit more */
+#scene2 .letterScroll::-webkit-scrollbar{ width: 10px; }
+#scene2 .letterScroll::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,.20);
+  border-radius: 999px;
+}
+#scene2 .letterScroll::-webkit-scrollbar-track{ background: transparent; }
+
+#scene2 .letterScroll{
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* keep buttons visible */
+#scene2 .actions{
+  flex: 0 0 auto !important;
+  margin-top: 14px;
+}
+/* ===== SCENE 2 SCROLL (FINAL, WORKS) ===== */
+#scene2 .paper{
+  height: min(76vh, 680px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#scene2 .letterScroll{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+#scene2 .actions{
+  flex: 0 0 auto !important;
+  margin-top: 14px;
+}
+/* ===== FIX: CAPTION VISIBLE ABOVE LAYERS ===== */
+#scene3 .cutLayer { z-index: 1; }     /* forest/meadow/night */
+#scene3 .char     { z-index: 10; }    /* girl/boy */
+
+#scene3 #petalLayer,
+#scene3 #cometLayer { z-index: 15; }  /* effects */
+
+#scene3 #caption { z-index: 40; position:absolute; } /* caption always on top */
+#scene3 #lyrics  { z-index: 45; position:absolute; } /* lyrics above caption */
+
+#scene3 #black   { z-index: 60; }     /* final fade stays top */
+/* ===== SCENE 3 UI: ALWAYS VISIBLE (CAPTION + LYRICS) ===== */
+#scene3 #caption{
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  bottom: 20px !important;              /* fixed distance from bottom */
+  width: min(860px, 92vw) !important;
+  max-height: 22vh;                     /* prevents huge box */
+  overflow: hidden;
+  font-size: 15px;
+  padding: 12px 14px;
+}
+
+#scene3 #lyrics{
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  bottom: 120px !important;             /* sits above caption */
+  width: min(920px, 92vw) !important;
+  font-size: 17px;
+  padding: 10px 14px;
+}
+
+/* If your vignette is overlapping UI, keep it behind */
+#scene3 .vignette{ z-index: 5; }
+
+</style>
+</head>
+<body>
+
+<!-- SCENE 1 -->
+<section id="scene1" class="scene active">
+  <div class="bg">
+    <!-- REAL BACKGROUND IMAGE -->
+    <div class="scene1Bg"></div>
+
+    <!-- OPTIONAL: keep these if you still want the road effect -->
+    <div class="roadSky"></div>
+    <div class="road"></div>
+    <div class="roadLine"></div>
+
+    <div id="petals" class="flowerBand"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <div class="startWrap fadeUp">
+    <h1 class="title">A letter for you ❤️</h1>
+    <p class="subtitle">Press the seal to open it.<br/>It will “play” like a little event page.</p>
+    <div class="hint">Click the seal (or press Enter) ✨</div>
+
+    <div class="envelope" aria-label="Envelope">
+      <div class="flap" id="flap"></div>
+      <div class="seal" id="seal" role="button" tabindex="0" aria-label="Open the seal">
+        <span>OPEN</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 2 -->
+<section id="scene2" class="scene">
+  <div class="bg">
+    <div class="letterBg"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <div class="letterCard fadeUp">
+    <div class="paper">
+      <div class="paperHeader">
+        <div class="badge">Valentine Event</div>
+        <div class="toFrom" id="meta">To: Bi • From: Me</div>
+      </div>
+
+      <!-- SCROLL AREA -->
+      <div class="letterScroll">
+        <div id="typeArea" class="typeArea"></div>
+        <span id="cursor" class="cursor"></span>
+      </div>
+
+      <div class="actions">
+        <button id="skip" class="btn ghost" type="button">Skip reveal</button>
+        <button id="toCutscene" class="btn primary" type="button" disabled>Continue</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 3 (CUTSCENE) -->
+<section id="scene3" class="scene">
+  <div class="bg">
+    <div id="cutStage" class="cutStage">
+      <div id="layerForest" class="cutLayer forestLayer"></div>
+      <div id="layerMeadow" class="cutLayer meadowLayer"></div>
+      <div id="layerNight"  class="cutLayer nightLayer"></div>
+
+      <div id="girl" class="char girl"></div>
+      <div id="boy"  class="char boy"></div>
+
+<div id="petalLayer" class="petalLayer"></div>
+<div id="cometLayer" class="cometLayer"></div>
+
+      <div id="caption" class="caption"></div>
+      <div id="lyrics" class="lyrics"></div>
+
+      <div id="black" class="black">
+        <div id="finalMsg" class="finalMsg"></div>
+      </div>
+    </div>
+
+    <div class="vignette"></div>
+  </div>
+</section>
+
+<script>
+/* ===== AUDIO (music.mp3 in same folder) ===== */
+const audio = new Audio("music.mp3");
+audio.loop = false;
+
+/* ===== Scene switching ===== */
+const s1 = document.getElementById("scene1");
+const s2 = document.getElementById("scene2");
+const s3 = document.getElementById("scene3");
+
+function showScene(scene){
+  [s1,s2,s3].forEach(s => s.classList.remove("active"));
+  scene.classList.add("active");
+}
+
+/* ===== Petals in scene 1 ===== */
+const petals = document.getElementById("petals");
+function spawnPetal(){
+  const p = document.createElement("div");
+  p.className = "petal";
+  const x0 = (Math.random()*100).toFixed(2) + "vw";
+  const x1 = (Math.random()*100).toFixed(2) + "vw";
+  p.style.setProperty("--x0", x0);
+  p.style.setProperty("--x1", x1);
+  p.style.left = (Math.random()*100).toFixed(2) + "vw";
+  p.style.animationDuration = (4.5 + Math.random()*3.5).toFixed(2) + "s";
+  p.style.opacity = (0.45 + Math.random()*0.5).toFixed(2);
+  petals.appendChild(p);
+  setTimeout(()=>p.remove(), 8000);
+}
+setInterval(spawnPetal, 220);
+
+/* ===== Letter reveal (typewriter) ===== */
+const flap = document.getElementById("flap");
+const seal = document.getElementById("seal");
+const typeArea = document.getElementById("typeArea");
+const cursor = document.getElementById("cursor");
+const btnSkip = document.getElementById("skip");
+const btnToCutscene = document.getElementById("toCutscene");
+
+const LETTER_LINES = [
+  "Hi Bi,",
+  "",
+  "If you’re reading this, it means you opened my little “event page.”",
+  "I wanted it to feel like something you discover — like a small moment just for you.",
+  "",
+  "I don’t always do a good job at saying what I feel.",
+  "Sometimes I get in my own head. Sometimes I say the wrong thing.",
+  "Sometimes I don’t explain myself properly and it turns into silence or tension.",
+  "",
+  "So I’m writing this in the simplest way I can:",
+  "",
+  "I love you.",
+  "",
+  "Not the dramatic, movie kind of love that only exists when everything is perfect —",
+  "but the real kind.",
+  "The kind that stays even when my mood is messy,",
+  "even when I’m overwhelmed,",
+  "even when I don’t know how to be the version of me you deserve yet.",
+  "",
+  "I love you when we’re laughing at nothing.",
+  "I love you when we’re quiet and just… there.",
+  "I love you when the day is heavy and you still show up anyway.",
+  "",
+  "And I need you to know something:",
+  "you don’t have to be “more” for me to love you.",
+  "You don’t have to be perfect.",
+  "You don’t have to carry everything alone.",
+  "",
+  "I see you.",
+  "I see how much you try.",
+  "I see how patient you can be, even when I don’t make it easy.",
+  "I see the way you love — and it’s rare.",
+  "",
+  "I’m sorry for the times I’ve made you feel unsure.",
+  "Sorry for the times I didn’t communicate properly.",
+  "Sorry for the times I let pride or fear speak louder than what I really meant.",
+  "",
+  "I’m learning.",
+  "And I want to keep learning — with you.",
+  "",
+  "If I could give you one promise today, it would be this:",
+  "I’ll keep choosing you.",
+  "Not only when it’s easy,",
+  "but especially when it matters.",
+  "",
+  "And maybe that’s why I made this.",
+  "Because I wanted you to have something you can open",
+  "and remember that you’re loved in a way that’s steady and real.",
+  "",
+  "Thank you for staying.",
+  "Thank you for being patient with me.",
+  "Thank you for making my world feel softer.",
+  "",
+  "I hope this year is gentle to you.",
+  "I hope you feel proud of yourself.",
+  "And I hope you never forget that you’re worth loving — fully.",
+  "",
+  "Happy Valentine’s Day, Bi.",
+  "",
+  "Always,",
+  "— Me"
+];
+
+let revealTimer = null;
+let revealing = false;
+let fullText = LETTER_LINES.join("\n");
+let i = 0;
+
+function startReveal(){
+  if (revealing) return;
+  revealing = true;
+  typeArea.textContent = "";
+  cursor.style.display = "inline-block";
+  btnToCutscene.disabled = true;
+
+  const speed = 22;
+  revealTimer = setInterval(() => {
+    typeArea.textContent += fullText[i] ?? "";
+    i++;
+    if (i >= fullText.length){
+      finishReveal();
+    }
+  }, speed);
+}
+
+function finishReveal(){
+  clearInterval(revealTimer);
+  revealTimer = null;
+  revealing = false;
+  typeArea.textContent = fullText;
+  cursor.style.display = "none";
+  btnToCutscene.disabled = false;
+}
+
+btnSkip.addEventListener("click", finishReveal);
+
+/* ===== Open letter ===== */
+function openLetter(){
+  // Music 1: start from 00:00 (quiet)
+  audio.currentTime = 0;
+  audio.volume = 0.25;
+  audio.play();
+
+  // flap animation then switch scene
+  flap.style.transform = "rotateX(170deg)";
+  seal.style.pointerEvents = "none";
+  setTimeout(()=>{
+    showScene(s2);
+    i = 0;
+    startReveal();
+  }, 750);
+}
+seal.addEventListener("click", openLetter);
+seal.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" ") openLetter(); });
+
+/* ===== Fade helper ===== */
+function fadeTo(targetVolume = 0.25, step = 0.03, intervalMs = 80){
+  return new Promise((resolve) => {
+    const t = setInterval(() => {
+      const v = audio.volume ?? 0;
+      if (Math.abs(v - targetVolume) <= step) {
+        audio.volume = targetVolume;
+        clearInterval(t);
+        resolve();
+      } else {
+        audio.volume = v + (v < targetVolume ? step : -step);
+      }
+    }, intervalMs);
+  });
+}
+const CUTSCENE_SPEED = 2.2;
+
+function waitCutscene(ms){
+  return new Promise(r => setTimeout(r, ms * CUTSCENE_SPEED));
+}
+
+function wait(ms){
+  return new Promise(r => setTimeout(r, ms));
+}
+
+
+/* ===== CUTSCENE timeline ===== */
+/* ===== CUTSCENE VISUAL HELPERS (camera + parallax + petals) ===== */
+const cutStage = document.getElementById("cutStage");
+const petalLayer = document.getElementById("petalLayer");
+
+function camTo({scale=1, x=0, y=0}){
+  cutStage.style.setProperty("--camScale", scale);
+  cutStage.style.setProperty("--camX", `${x}px`);
+  cutStage.style.setProperty("--camY", `${y}px`);
+}
+
+/* Parallax via mouse (subtle) */
+let targetPX = 0, targetPY = 0;
+window.addEventListener("mousemove", (e)=>{
+  const s3Active = document.getElementById("scene3").classList.contains("active");
+  if(!s3Active) return;
+
+  const cx = window.innerWidth/2;
+  const cy = window.innerHeight/2;
+  const dx = (e.clientX - cx) / cx; // -1..1
+  const dy = (e.clientY - cy) / cy;
+
+  targetPX = dx * 18;
+  targetPY = dy * 12;
+}, {passive:true});
+
+function parallaxTick(){
+  const styles = getComputedStyle(cutStage);
+  const curPX = parseFloat(styles.getPropertyValue("--px")) || 0;
+  const curPY = parseFloat(styles.getPropertyValue("--py")) || 0;
+
+  const nextPX = curPX + (targetPX - curPX) * 0.08;
+  const nextPY = curPY + (targetPY - curPY) * 0.08;
+
+  cutStage.style.setProperty("--px", `${nextPX}px`);
+  cutStage.style.setProperty("--py", `${nextPY}px`);
+
+  requestAnimationFrame(parallaxTick);
+}
+parallaxTick();
+
+/* Floating petals for cutscene */
+let petalTimer = null;
+
+function startCutPetals(rateMs = 120){
+  stopCutPetals();
+  petalTimer = setInterval(()=>{
+    const p = document.createElement("div");
+    p.className = "cutPetal";
+
+    const x = (Math.random()*100).toFixed(2) + "vw";
+    const wind = ((Math.random()*26)-13).toFixed(1) + "vw";
+
+    p.style.setProperty("--x", x);
+    p.style.setProperty("--wind", wind);
+    p.style.setProperty("--dur", (4.8 + Math.random()*3.2).toFixed(2) + "s");
+
+    p.style.left = x;
+    p.style.top = "-10vh";
+    p.style.opacity = (0.35 + Math.random()*0.55).toFixed(2);
+
+    petalLayer.appendChild(p);
+    setTimeout(()=>p.remove(), 9000);
+  }, rateMs);
+}
+
+function stopCutPetals(){
+  if(petalTimer) clearInterval(petalTimer);
+  petalTimer = null;
+  petalLayer.innerHTML = "";
+}
+
+const layerForest = document.getElementById("layerForest");
+const layerMeadow = document.getElementById("layerMeadow");
+const layerNight  = document.getElementById("layerNight");
+const girl = document.getElementById("girl");
+const boy  = document.getElementById("boy");
+const caption = document.getElementById("caption");
+const lyrics = document.getElementById("lyrics");
+const cometLayer = document.getElementById("cometLayer");
+const black = document.getElementById("black");
+const finalMsg = document.getElementById("finalMsg");
+
+function setCaption(text, on=true){
+  caption.textContent = text || "";
+  caption.classList.toggle("on", !!on && !!text);
+}
+function setLyrics(html, on=true){
+  lyrics.innerHTML = html || "";
+  lyrics.classList.toggle("on", !!on && !!html);
+}
+
+function spawnComets(count=6){
+  cometLayer.innerHTML = "";
+  for(let k=0;k<count;k++){
+    setTimeout(()=>{
+      const c = document.createElement("div");
+      c.className = "comet";
+      c.style.top = (Math.random()*35).toFixed(1) + "vh";
+      c.style.left = (-20 - Math.random()*30).toFixed(1) + "vw";
+      cometLayer.appendChild(c);
+      setTimeout(()=>c.remove(), 2500);
+    }, k * 600);
+  }
+}
+
+function resetCutscene(){
+  [layerForest, layerMeadow, layerNight].forEach(l => l.classList.remove("on"));
+  [girl, boy].forEach(ch => ch.classList.remove("on","run","hold","offer","bouquet"));
+  setCaption("", false);
+  setLyrics("", false);
+  cometLayer.innerHTML = "";
+  black.classList.remove("on");
+  finalMsg.textContent = "";
+  stopCutPetals();
+  camTo({scale:1, x:0, y:0});
+
+}
+
+async function playLyricsTimeline(){
+  // Starts when cutscene begins (music jumps to 3:01).
+  // Your provided lines are aligned around 3:00+, so we start immediately.
+  const L = [
+    [0,    3000,  "Find the way"],
+
+    [3000, 6000,  "Even without words<br>Even without wings to fly on"],
+    [9000, 6000,  "As long as we stand our ground in the wind"],
+    [15000, 9000, "Even if we're the first ones afflicted with this pain"],
+
+    [26000, 13000, "Giving an answer surely isn't everything"],
+    [39000, 18000, "I'll be patient, it's all right And so are you..."],
+
+    [59000, 6000,  "Find the way though in this glowing cosmos<br>Our hands can't quite reach"],
+    [65000, 6000,  "We depend on only our resounding love"],
+    [72000, 11000, "Because at the end of the path we've traveled we'll find the light"],
+
+    [84000, 6000,  "Find the way,<br>Even without words Even without wings to fly on"],
+    [90000, 7000,  "As long as we stand our ground in the wind"],
+    [97000, 11000, "At the end of the path we've traveled we finally saw the light"],
+    [108000, 6000, "You'll find the way"]
+  ];
+
+  const t0 = performance.now();
+  for (const [delay, dur, html] of L){
+    const now = performance.now();
+    const waitMs = Math.max(0, (t0 + delay) - now);
+    await wait(waitMs);
+    setLyrics(html, true);
+    await wait(dur);
+    setLyrics("", false);
+  }
+}
+/* ===== PER-SCENE TIMING CONTROL ===== */
+const T = {
+  s41: 12000,   // forest fade-in
+  s42: 2600,  // girl appears
+  s43: 4000,  // girl runs
+  s50: 10000,  // meadow reveal
+  s60: 12000,  // boy appears
+  s70: 14000,  // boy offers hand
+  s80: 15000,  // hold hands
+  s90: 45000,  // night + comets
+  s95: 6000   // bouquet moment (if you use it)
+};
+
+// Multiplier for ALL cutscene timing (optional global dial)
+let CUT_MULT = 1.0;
+
+// Use this everywhere instead of wait/waitCutscene
+function beat(key){
+  return new Promise(r => setTimeout(r, (T[key] || 0) * CUT_MULT));
+}
+
+async function startCutscene(){
+  resetCutscene();
+  showScene(s3);
+  camTo({scale:1.03, x:0, y:8});
+
+
+  // Start lyrics timeline alongside the cutscene
+  playLyricsTimeline();
+
+  // Scene 4.1: figure in the distance
+  layerForest.classList.add("on");
+  await wait(400);
+  girl.classList.add("on");
+  camTo({scale:1.07, x:-10, y:12});
+  setCaption("She sees a figure in the distance...");
+  await beat("s42");
+
+  // She runs toward it
+  setCaption("And she runs toward it.");
+  girl.classList.add("run");
+  camTo({scale:1.07, x:-10, y:12});
+  await beat("s43");
+
+  // Scene 5: emerges into meadow
+  layerMeadow.classList.add("on");
+startCutPetals(60);   // meadow petals (tweak: 40–90)
+  setCaption("She emerges into a wide field of flowers.");
+  await beat("s50");
+
+  // Scene 6: man in the center
+  boy.classList.add("on");
+  setCaption("A man stands in the center.");
+  await beat("s60");
+
+  // Scene 7: boy offers hand first (pose only)
+setCaption("He reaches out, smiling.");
+boy.classList.add("offer");
+await beat("s70");
+
+// Scene 8: girl takes it (move both into center)
+girl.classList.remove("run");
+girl.classList.add("hold");
+
+boy.classList.remove("offer");
+boy.classList.add("hold");
+
+setCaption("She takes his hand.");
+await beat("s80");
+
+  // Scene 9: night + comets
+layerNight.classList.add("on");
+camTo({scale:1.05, x:0, y:0});
+startCutPetals(90);
+setCaption("They look up…");
+spawnComets(8);
+await beat("s90");
+
+// Scene 9.5: bouquet moment (NEW)
+setCaption("And then… he gives her a bouquet.");
+boy.classList.remove("hold","offer");
+boy.classList.add("bouquet");
+await beat("s95");
+
+// Scene 10: final
+stopCutPetals();
+setCaption("", false);
+setLyrics("", false);
+black.classList.add("on");
+finalMsg.textContent = "I’ll find you in every lifetime.<3";
+}
+
+/* ===== Continue button: switch music + start cutscene ===== */
+btnToCutscene.addEventListener("click", async ()=>{
+  // Fade out Music 1
+  await fadeTo(0.0, 0.04, 70);
+
+  // Music 2: start at 3:01 (181s) and fade in (QUIETER)
+  audio.currentTime = 181; // 3:01
+  audio.play();
+  audio.volume = 0.0;
+  await fadeTo(0.25, 0.03, 80); // <-- adjust if needed (0.20-0.30)
+
+  // Start cutscene
+  startCutscene();
+});
+</script>
+
+</body>
+</html>
